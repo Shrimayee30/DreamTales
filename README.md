@@ -200,7 +200,7 @@ Generated files are written to:
 ## Author
 
 Shrimayee Deshpande  
-Contact: `75236747+Shrimayee30@users.noreply.github.com`
+Check out my profile: `github.com/Shrimayee30`
 
 ## License
 
