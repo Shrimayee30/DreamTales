@@ -5,6 +5,7 @@ DreamTales is a creative AI storytelling project that turns dream-like prompts i
 - `DreamCore`: fine-tunes a causal language model on TinyStories-style text for dream story generation.
 - `DreamVision`: trains a conditional GAN to generate small scene images from labels such as character, action, location, and mood.
 - `DreamTunes`: experiments with MusicGen and AudioLDM to generate background music from scene descriptions.
+- `DreamSync`: breaks stories into scenes, analyzes sentiment, and creates sync plans for text, image, and audio generation.
 - `UI`: provides a Gradio interface that connects story text, scene planning, and generated/sample visuals.
 
 ## Project Structure
@@ -31,6 +32,12 @@ DreamTales/
     src/                  # MusicGen and AudioLDM generation code
     outputs/              # Generated audio and metadata
     DATASETS.md
+    requirements.txt
+    README.md
+  DreamSync/
+    configs/              # Scene sync experiment configs
+    src/                  # Scene splitting, sentiment, prompt, and timing logic
+    outputs/              # Generated sync plans
     requirements.txt
     README.md
   UI/
@@ -81,6 +88,12 @@ Install the DreamTunes dependencies:
 
 ```bash
 pip install -r DreamTunes/requirements.txt
+```
+
+Install the DreamSync dependencies:
+
+```bash
+pip install -r DreamSync/requirements.txt
 ```
 
 If you are training on Linux with CUDA and want 4-bit QLoRA support for DreamCore, also install `bitsandbytes`.
@@ -165,6 +178,20 @@ Run only AudioLDM:
 python DreamTunes/src/compare_generators.py --provider audioldm
 ```
 
+### Create a DreamSync Scene Plan
+
+Break a story into synced scene instructions:
+
+```bash
+python DreamSync/src/sync_story.py
+```
+
+DreamSync outputs scene text, sentiment, DreamVision labels, DreamTunes prompts, and timing metadata to:
+
+```text
+DreamSync/outputs/plans/
+```
+
 ## How to Run the Notebook
 
 The project notebook is located at:
@@ -241,6 +268,7 @@ Generated files are written to:
 - `DreamVision/outputs/logs/training_history.csv`: GAN training history.
 - `DreamTunes/outputs/audio/`: generated background music files.
 - `DreamTunes/outputs/metadata/`: generation prompts, settings, and output metadata.
+- `DreamSync/outputs/plans/`: scene-level sync plans for UI orchestration.
 
 ## Author
 

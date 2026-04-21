@@ -11,12 +11,17 @@ import gradio as gr
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DREAMVISION_ROOT = PROJECT_ROOT / "DreamVision"
+DREAMSYNC_SRC = PROJECT_ROOT / "DreamSync" / "src"
 SAMPLES_DIR = DREAMVISION_ROOT / "outputs" / "samples"
 CHECKPOINT_PATH = DREAMVISION_ROOT / "outputs" / "checkpoints" / "conditional_generator_epoch_010.pt"
 UI_OUTPUT_DIR = SAMPLES_DIR / "ui_generated"
 
 if str(DREAMVISION_ROOT) not in sys.path:
     sys.path.append(str(DREAMVISION_ROOT))
+if str(DREAMSYNC_SRC) not in sys.path:
+    sys.path.append(str(DREAMSYNC_SRC))
+
+from pipeline import analyze_story
 
 
 CHARACTER_CLASSES = ["none", "mother_child", "friends", "animal_pair"]
@@ -293,12 +298,12 @@ def default_story() -> str:
 
 def run_dreamvision(story: str, preset_name: str) -> Generator[tuple[str, str, list[tuple[str | None, str]]], None, None]:
     selected_story = story.strip() or SCENE_PRESETS.get(preset_name, default_story())
-    scenes = split_story_into_scenes(selected_story)
-    plans = [infer_scene_plan(scene_text, index) for index, scene_text in enumerate(scenes, start=1)]
+    sync_plan = analyze_story(selected_story)
+    plans = sync_plan.scenes
     metrics = build_story_metrics(plans, selected_story)
 
     yield (
-        format_status("DreamVision 2.0 is listening to the story and mapping the emotional beats."),
+        format_status("DreamSync is breaking the story into scenes and mapping the emotional beats."),
         metrics + build_scene_markup(plans),
         [],
     )

@@ -1,0 +1,6 @@
+{
+  "max_scenes": 3,
+  "default_scene_duration_seconds": 6.0,
+  "description": "Smoke settings for DreamSync scene splitting, sentiment analysis, and UI sync planning."
+}
+
