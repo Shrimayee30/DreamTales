@@ -4,6 +4,7 @@ DreamTales is a creative AI storytelling project that turns dream-like prompts i
 
 - `DreamCore`: fine-tunes a causal language model on TinyStories-style text for dream story generation.
 - `DreamVision`: trains a conditional GAN to generate small scene images from labels such as character, action, location, and mood.
+- `DreamTunes`: experiments with MusicGen and AudioLDM to generate background music from scene descriptions.
 - `UI`: provides a Gradio interface that connects story text, scene planning, and generated/sample visuals.
 
 ## Project Structure
@@ -23,6 +24,13 @@ DreamTales/
     scripts/              # Data preparation and sample generation scripts
     src/                  # Conditional GAN dataset, model, training, and utilities
     outputs/              # Checkpoints, generated samples, and training logs
+    requirements.txt
+    README.md
+  DreamTunes/
+    configs/              # Text-to-audio experiment configs
+    src/                  # MusicGen and AudioLDM generation code
+    outputs/              # Generated audio and metadata
+    DATASETS.md
     requirements.txt
     README.md
   UI/
@@ -67,6 +75,12 @@ Install the additional packages used by DreamVision and the Gradio UI:
 
 ```bash
 pip install pandas pillow torchvision tqdm gradio requests jupyter
+```
+
+Install the DreamTunes dependencies:
+
+```bash
+pip install -r DreamTunes/requirements.txt
 ```
 
 If you are training on Linux with CUDA and want 4-bit QLoRA support for DreamCore, also install `bitsandbytes`.
@@ -131,6 +145,26 @@ Generate sample image grids from a saved checkpoint:
 python DreamVision/scripts/generate_samples.py
 ```
 
+### Generate DreamTunes Background Music
+
+Run both text-to-audio generators:
+
+```bash
+python DreamTunes/src/compare_generators.py --config DreamTunes/configs/dreamtunes_smoke.json
+```
+
+Run only MusicGen:
+
+```bash
+python DreamTunes/src/compare_generators.py --provider musicgen
+```
+
+Run only AudioLDM:
+
+```bash
+python DreamTunes/src/compare_generators.py --provider audioldm
+```
+
 ## How to Run the Notebook
 
 The project notebook is located at:
@@ -188,6 +222,15 @@ DreamVision labels each image using four condition groups:
 
 These labels are encoded as condition vectors for the conditional GAN.
 
+### DreamTunes Audio Dataset
+
+DreamTunes currently uses pretrained text-to-audio models, so no local audio dataset is required for the first experiment. The module compares generated background music from scene descriptions using:
+
+- `facebook/musicgen-small`
+- `cvssp/audioldm-s-full-v2`
+
+Candidate datasets for the next stage are documented in `DreamTunes/DATASETS.md`. The recommended next step is to evaluate with DreamTales-specific scene prompts first, then add MusicCaps if a formal text-to-music benchmark is needed.
+
 ## Outputs
 
 Generated files are written to:
@@ -196,6 +239,8 @@ Generated files are written to:
 - `DreamVision/outputs/checkpoints/`: conditional GAN generator and discriminator checkpoints.
 - `DreamVision/outputs/samples/`: generated scene samples and preview grids.
 - `DreamVision/outputs/logs/training_history.csv`: GAN training history.
+- `DreamTunes/outputs/audio/`: generated background music files.
+- `DreamTunes/outputs/metadata/`: generation prompts, settings, and output metadata.
 
 ## Author
 

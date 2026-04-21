@@ -1,0 +1,18 @@
+{
+  "provider": "both",
+  "scene": "A calm moonlit forest where two friends walk under glowing stars while a soft cloud watches over them.",
+  "mood": "calm",
+  "duration_seconds": 8.0,
+  "seed": 42,
+  "output_dir": "DreamTunes/outputs/audio",
+  "metadata_dir": "DreamTunes/outputs/metadata",
+  "musicgen_model": "facebook/musicgen-small",
+  "musicgen_max_new_tokens": 256,
+  "musicgen_temperature": 1.0,
+  "musicgen_top_k": 250,
+  "audioldm_model": "cvssp/audioldm-s-full-v2",
+  "audioldm_num_inference_steps": 25,
+  "audioldm_guidance_scale": 2.5,
+  "audioldm_negative_prompt": "low quality, distorted, noisy, harsh vocals"
+}
+
