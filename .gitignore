@@ -1,0 +1,33 @@
+.DS_Store
+.idea/
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+DreamCore/outputs/*
+!DreamCore/outputs/.gitkeep
+
+DreamVision/data/raw/*
+!DreamVision/data/raw/.gitkeep
+
+DreamVision/data/processed/labels/*
+!DreamVision/data/processed/labels/.gitkeep
+
+DreamVision/data/processed/metadata/*
+!DreamVision/data/processed/metadata/.gitkeep
+
+DreamVision/outputs/checkpoints/*
+!DreamVision/outputs/checkpoints/.gitkeep
+
+DreamVision/outputs/logs/*
+!DreamVision/outputs/logs/.gitkeep
+
+DreamVision/outputs/samples/*
+!DreamVision/outputs/samples/.gitkeep
+
+DreamVision 2.0/data/*
+!DreamVision 2.0/data/.gitkeep
+
+DreamVision 2.0/outputs/*
+!DreamVision 2.0/outputs/.gitkeep
