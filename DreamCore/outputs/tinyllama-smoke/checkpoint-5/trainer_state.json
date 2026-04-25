@@ -47,9 +47,9 @@
     {
       "epoch": 0.078125,
       "eval_loss": 1.3773982524871826,
-      "eval_runtime": 15.9987,
-      "eval_samples_per_second": 4.0,
-      "eval_steps_per_second": 4.0,
+      "eval_runtime": 16.3405,
+      "eval_samples_per_second": 3.917,
+      "eval_steps_per_second": 3.917,
       "step": 5
     }
   ],

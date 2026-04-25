@@ -19,7 +19,7 @@ class TrainingConfig:
     max_steps: int = -1
     learning_rate: float = 2e-4
     weight_decay: float = 0.01
-    warmup_ratio: float = 0.03
+    warmup_steps: int = 0
     lr_scheduler_type: str = "cosine"
     per_device_train_batch_size: int = 2
     per_device_eval_batch_size: int = 2
