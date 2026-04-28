@@ -1,0 +1,32 @@
+{
+  "title": "The Brown Kayak",
+  "voice": "Karen",
+  "rate": 145,
+  "scene_count": 3,
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "Once upon a time, in a big lake, there was a brown kayak that loved to roll and splash in the warm water.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_brown_kayak/scene_01.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_brown_kayak/scene_01.aiff",
+      "voice": "Karen",
+      "rate": 145
+    },
+    {
+      "scene_number": 2,
+      "text": "One sunny day, a little boy named Tim came to play, and they laughed as the kayak bobbed gently across the lake.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_brown_kayak/scene_02.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_brown_kayak/scene_02.aiff",
+      "voice": "Karen",
+      "rate": 145
+    },
+    {
+      "scene_number": 3,
+      "text": "When Tim went home, the brown kayak waited happily in the water, knowing they would play again soon.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_brown_kayak/scene_03.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_brown_kayak/scene_03.aiff",
+      "voice": "Karen",
+      "rate": 145
+    }
+  ]
+}

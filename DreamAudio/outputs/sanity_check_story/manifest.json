@@ -1,0 +1,32 @@
+{
+  "title": "sanity_check_story",
+  "voice": "Samantha",
+  "rate": 165,
+  "scene_count": 3,
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "A cloud floated over a lake.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/sanity_check_story/scene_01.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/sanity_check_story/scene_01.aiff",
+      "voice": "Samantha",
+      "rate": 165
+    },
+    {
+      "scene_number": 2,
+      "text": "Tim smiled at the water.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/sanity_check_story/scene_02.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/sanity_check_story/scene_02.aiff",
+      "voice": "Samantha",
+      "rate": 165
+    },
+    {
+      "scene_number": 3,
+      "text": "The dream ended softly.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/sanity_check_story/scene_03.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/sanity_check_story/scene_03.aiff",
+      "voice": "Samantha",
+      "rate": 165
+    }
+  ]
+}
