@@ -28,6 +28,7 @@ SAMPLES_DIR = DREAMVISION_ROOT / "outputs" / "samples"
 CHECKPOINT_PATH = DREAMVISION_ROOT / "outputs" / "checkpoints" / "conditional_generator_epoch_010.pt"
 UI_OUTPUT_DIR = SAMPLES_DIR / "ui_generated"
 LAKE_GAN_MODEL_PATH = DREAMVISION_2_ROOT / "models" / "lake_background_generator.torchscript.pt"
+FOREST_GAN_MODEL_PATH = DREAMVISION_2_ROOT / "models" / "forest_background_generator.torchscript.pt"
 LAKE_GAN_HELPER_PATH = DREAMVISION_2_ROOT / "src" / "lake_background_gan.py"
 NARRATION_HELPER_PATH = DREAMAUDIO_ROOT / "narration.py"
 FEEDBACK_CSV_PATH = PROJECT_ROOT / "UI" / "dreamtales_feedback.csv"
@@ -91,6 +92,21 @@ TINYSTORIES_SAMPLE_STORIES = [
             "Soon the rabbit curled under a leaf and dreamed of glowing clouds."
         ),
     },
+    {
+        "title": "The Curious Forest Fox",
+        "keywords": ["fox", "rabbit", "forest", "animals", "study", "curious", "woods"],
+        "story": (
+            "Once upon a time, there was a tall fox who lived in the forest. "
+            "She was very curious, and every day she liked to study the forest animals. "
+            "One day, she asked a rabbit who was hopping by, \"Do you know what I study every day?\" "
+            "The rabbit looked up and said, \"No, I don't know, what do you study?\" "
+            "The fox replied, \"I like to study the animals that live in the forest. I like to find out how they live and what they do.\" "
+            "The rabbit said, \"That sounds very interesting! I wish I could study too.\" "
+            "The fox smiled and said, \"You can. Just come with me tomorrow, and I will show you how to study the animals in the forest.\" "
+            "The rabbit was very happy and the next day they both went off together to study the animals in the forest. "
+            "They had lots of fun, and they both learnt a lot."
+        ),
+    },
 ]
 
 TINYSTORIES_DATASET_PATHS = [
@@ -142,6 +158,8 @@ _MODEL_BUNDLE = None
 _MODEL_LOAD_ERROR = None
 _LAKE_GAN_BUNDLE = None
 _LAKE_GAN_LOAD_ERROR = None
+_FOREST_GAN_BUNDLE = None
+_FOREST_GAN_LOAD_ERROR = None
 _NARRATION_MODULE = None
 _NARRATION_LOAD_ERROR = None
 _LOFI_LOOP_DATA_URI = None
@@ -283,7 +301,7 @@ def load_local_tinystories(limit: int = 5000) -> list[dict[str, object]]:
         if records:
             break
 
-    _TINYSTORIES_CACHE = records or TINYSTORIES_SAMPLE_STORIES
+    _TINYSTORIES_CACHE = TINYSTORIES_SAMPLE_STORIES + records if records else TINYSTORIES_SAMPLE_STORIES
     return _TINYSTORIES_CACHE
 
 
@@ -297,7 +315,7 @@ def select_tinystories_story(prompt: str) -> dict[str, object]:
 
 def build_story_scene_markup(story_record: dict[str, object], visible_scene_count: int | None = None) -> str:
     story = str(story_record["story"])
-    scenes = split_story_by_sentence(story)
+    scenes = split_story_into_scenes(story)
     visible_scene_count = len(scenes) if visible_scene_count is None else visible_scene_count
     scene_cards = []
 
@@ -572,37 +590,56 @@ def load_narration_module():
     return _NARRATION_MODULE
 
 
-def load_lake_gan_bundle():
-    global _LAKE_GAN_BUNDLE, _LAKE_GAN_LOAD_ERROR
+def load_background_gan_bundle(model_path: Path, cache_name: str):
+    global _LAKE_GAN_BUNDLE, _LAKE_GAN_LOAD_ERROR, _FOREST_GAN_BUNDLE, _FOREST_GAN_LOAD_ERROR
 
-    if _LAKE_GAN_BUNDLE is not None or _LAKE_GAN_LOAD_ERROR is not None:
-        return _LAKE_GAN_BUNDLE
+    if cache_name == "forest":
+        if _FOREST_GAN_BUNDLE is not None or _FOREST_GAN_LOAD_ERROR is not None:
+            return _FOREST_GAN_BUNDLE
+    else:
+        if _LAKE_GAN_BUNDLE is not None or _LAKE_GAN_LOAD_ERROR is not None:
+            return _LAKE_GAN_BUNDLE
 
     try:
         import torch
 
-        if not LAKE_GAN_MODEL_PATH.exists():
-            raise FileNotFoundError(f"Missing exported lake GAN at {LAKE_GAN_MODEL_PATH}")
+        if not model_path.exists():
+            raise FileNotFoundError(f"Missing exported {cache_name} GAN at {model_path}")
 
         lake_helper = load_lake_helper_module()
         device = torch.device("cpu")
-        generator = torch.jit.load(str(LAKE_GAN_MODEL_PATH), map_location=device)
+        generator = torch.jit.load(str(model_path), map_location=device)
         generator.eval()
 
-        _LAKE_GAN_BUNDLE = {
+        bundle = {
             "device": device,
             "generator": generator,
             "helper": lake_helper,
             "torch": torch,
         }
+        if cache_name == "forest":
+            _FOREST_GAN_BUNDLE = bundle
+        else:
+            _LAKE_GAN_BUNDLE = bundle
     except Exception as exc:
-        _LAKE_GAN_LOAD_ERROR = str(exc)
+        if cache_name == "forest":
+            _FOREST_GAN_LOAD_ERROR = str(exc)
+        else:
+            _LAKE_GAN_LOAD_ERROR = str(exc)
 
-    return _LAKE_GAN_BUNDLE
+    return _FOREST_GAN_BUNDLE if cache_name == "forest" else _LAKE_GAN_BUNDLE
 
 
-def generate_lake_scene_images(scene_count: int) -> list[str]:
-    bundle = load_lake_gan_bundle()
+def load_lake_gan_bundle():
+    return load_background_gan_bundle(LAKE_GAN_MODEL_PATH, "lake")
+
+
+def load_forest_gan_bundle():
+    return load_background_gan_bundle(FOREST_GAN_MODEL_PATH, "forest")
+
+
+def generate_background_scene_images(scene_count: int, background_model: str = "lake") -> list[str]:
+    bundle = load_forest_gan_bundle() if background_model == "forest" else load_lake_gan_bundle()
     if bundle is None:
         return []
 
@@ -623,6 +660,19 @@ def generate_lake_scene_images(scene_count: int) -> list[str]:
         image_data_uris.append(image_to_data_uri(image))
 
     return image_data_uris
+
+
+def story_background_model(story_record: dict[str, object], prompt: str) -> str:
+    text = " ".join(
+        [
+            prompt,
+            str(story_record.get("title", "")),
+            " ".join(str(keyword) for keyword in story_record.get("keywords", [])),
+            str(story_record.get("story", "")),
+        ]
+    ).lower()
+    forest_terms = ("forest", "woods", "fox", "rabbit", "animals", "tree")
+    return "forest" if any(term in text for term in forest_terms) else "lake"
 
 
 def generate_scene_narration_audio(story: str, title: str) -> list[dict[str, object]]:
@@ -798,11 +848,13 @@ def run_cloud_intro():
 
 def run_tinystories_scene_planner(prompt: str):
     selected_story = select_tinystories_story(prompt)
-    scenes = split_story_by_sentence(str(selected_story["story"]))
+    scenes = split_story_into_scenes(str(selected_story["story"]))
+    background_model = story_background_model(selected_story, prompt)
     feedback_context = {
         "prompt": prompt,
         "story_title": str(selected_story["title"]),
         "story": str(selected_story["story"]),
+        "background_model": background_model,
     }
     yield (
         format_cloud_speech("Making your dream..."),
@@ -814,7 +866,7 @@ def run_tinystories_scene_planner(prompt: str):
         "",
     )
     generation_started = time.time()
-    scene_image_uris = generate_lake_scene_images(len(scenes))
+    scene_image_uris = generate_background_scene_images(len(scenes), background_model=background_model)
     scene_audio_records = generate_scene_narration_audio(str(selected_story["story"]), str(selected_story["title"]))
     elapsed = time.time() - generation_started
     time.sleep(max(0, 10 - elapsed))

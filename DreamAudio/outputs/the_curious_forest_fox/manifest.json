@@ -1,0 +1,32 @@
+{
+  "title": "The Curious Forest Fox",
+  "voice": "Karen",
+  "rate": 145,
+  "scene_count": 3,
+  "scenes": [
+    {
+      "scene_number": 1,
+      "text": "Once upon a time, there was a tall fox who lived in the forest. She was very curious, and every day she liked to study the forest animals. One day, she asked a rabbit who was hopping by, \"Do you know what I study every day?\" The rabbit looked up and said, \"No, I don't know, what do you study?\" The fox replied, \"I like to study the animals that live in the forest.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_curious_forest_fox/scene_01.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_curious_forest_fox/scene_01.aiff",
+      "voice": "Karen",
+      "rate": 145
+    },
+    {
+      "scene_number": 2,
+      "text": "I like to find out how they live and what they do.\" The rabbit said, \"That sounds very interesting! I wish I could study too.\" The fox smiled and said, \"You can. Just come with me tomorrow, and I will show you how to study the animals in the forest.\" The rabbit was very happy and the next day they both went off together to study the animals in the forest.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_curious_forest_fox/scene_02.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_curious_forest_fox/scene_02.aiff",
+      "voice": "Karen",
+      "rate": 145
+    },
+    {
+      "scene_number": 3,
+      "text": "They had lots of fun, and they both learnt a lot.",
+      "audio_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_curious_forest_fox/scene_03.wav",
+      "source_aiff_path": "/Users/shrimayee/sdeshpan/ADL/DreamTales/DreamAudio/outputs/the_curious_forest_fox/scene_03.aiff",
+      "voice": "Karen",
+      "rate": 145
+    }
+  ]
+}

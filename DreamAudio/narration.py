@@ -21,7 +21,14 @@ def split_story_into_scenes(story: str, max_scenes: int = 3) -> list[str]:
     if not normalized:
         return []
     sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+", normalized) if part.strip()]
-    return sentences[:max_scenes]
+    if len(sentences) <= max_scenes:
+        return sentences
+
+    group_size = max(1, len(sentences) // max_scenes + (1 if len(sentences) % max_scenes else 0))
+    scenes = []
+    for index in range(0, len(sentences), group_size):
+        scenes.append(" ".join(sentences[index:index + group_size]))
+    return scenes[:max_scenes]
 
 
 def sanitize_slug(value: str) -> str:
